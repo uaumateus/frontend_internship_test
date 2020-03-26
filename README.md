@@ -27,7 +27,7 @@ The application **must** have:
 
 You can check the rules [here](https://www.figma.com/file/f7mAdy2IS1vaoOx3gaFCfq/Internship-Test?node-id=32%3A2)
 
-## Troubleshoot
+## Troubleshooting
 
 Any issues you have, please open a issue on this repository. One of our devs will answer you ASAP.
 
