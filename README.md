@@ -2,7 +2,7 @@
 
 
 > Hi! If you came here, this means you was approved in our first trials. Congratulations! The next step is described below in  a little development test to analyze your development skills. Since this is a internship test, you'll be evaluated mostly on your good practice skills and knowledge of the basics of the Flutter framework. Good luck! 
-- *Rafael Carvalho Monteiro, CTO*
+*Rafael Carvalho Monteiro, CTO*
 
 ## What you need to do
 
