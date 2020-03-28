@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontent_internship_test/models/user.dart';
 import 'package:frontent_internship_test/src/Home/home_page.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:masked_text/masked_text.dart';
 import 'dart:convert';
 
 class FormUser extends StatefulWidget {
@@ -42,6 +43,7 @@ class _FormUserState extends State<FormUser> {
   bool _isFieldEmptyDistrict = false;
   bool _isFieldEmptyCity = false;
   bool _isFieldEmptyState = false;
+  final _textCPFController = TextEditingController();
 
   void _submitForm() {
     var items = storage.getItem('users');
@@ -142,9 +144,8 @@ class _FormUserState extends State<FormUser> {
                                 else return null;
                               },
                               controller: _nameController,
-                              onTap: (){ setState(() { _isFieldEmptyName = true;});},
                               onSaved: (val) => user.name = val,
-                              onChanged: (text) { user.name = text; buttonActive(); },
+                              onChanged: (text) { user.name = text; buttonActive(); setState(() { _isFieldEmptyName = true;});},
                               )
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -169,35 +170,31 @@ class _FormUserState extends State<FormUser> {
                                 else return null;
                               },
                               controller: _emailController,
-                              onTap: (){ setState(() { _isFieldEmptyEmail = true;});},
                               onSaved: (val) => user.email = val,
-                              onChanged: (text) { user.email = text; buttonActive(); },
+                              onChanged: (text) { user.email = text; buttonActive(); setState(() { _isFieldEmptyEmail = true;});},
                               )
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                              child: TextFormField(decoration: InputDecoration(
-                                labelText: "Phone",
-                                border: OutlineInputBorder(),
-                                hintText: "Phone",
-                                suffixIcon: Visibility(
-                                  visible: _isFieldEmptyPhone,
-                                  child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
-                                    _isFieldEmptyPhone = false;
-                                    _phoneController.clear();
-                                  });},),
-                                )
+                              child: MaskedTextField(
+                                maskedTextFieldController: _phoneController,
+                                escapeCharacter: '#',
+                                mask: "(##) # ####-####",
+                                maxLength: 16,
+                                keyboardType: TextInputType.phone,
+                                inputDecoration: new InputDecoration(
+                                  labelText: "Phone",
+                                  border: OutlineInputBorder(),
+                                  hintText: "Phone",
+                                  suffixIcon: Visibility(
+                                    visible: _isFieldEmptyPhone,
+                                    child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
+                                      _isFieldEmptyPhone = false;
+                                      _phoneController.clear();
+                                    });},),
+                                  )
+                                ),
+                                onChange: (text) { user.phone = text; buttonActive(); setState(() { _isFieldEmptyPhone = true;});},
                               ),
-                              keyboardType: TextInputType.phone,
-                              validator: (String val){
-                                if(!RegExp(r'\(\d{2,}\)\d{4,}\-\d{4}').hasMatch(val))
-                                  return "Format (00)00000-0000";
-                                else return null;
-                              },
-                              controller: _phoneController,
-                              onTap: (){ setState(() { _isFieldEmptyPhone = true;});},
-                              onSaved: (val) => user.phone = val,
-                              onChanged: (text) { user.phone = text; buttonActive(); },
-                              )
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                               child: TextFormField(decoration: InputDecoration(
@@ -236,30 +233,28 @@ class _FormUserState extends State<FormUser> {
                               onSaved: (val) => user.date = val,
                               )
                             ),
+                            
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                              child: TextFormField(decoration: InputDecoration(
-                                labelText: "CPF",
-                                border: OutlineInputBorder(),
-                                hintText: "CPF",
-                                suffixIcon: Visibility(
-                                  visible: _isFieldEmptyCpf,
-                                  child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
-                                    _isFieldEmptyCpf = false;
-                                    _cpfController.clear();
-                                  });},),
-                                )
+                              child: MaskedTextField(
+                                maskedTextFieldController: _cpfController,
+                                escapeCharacter: '#',
+                                mask: "###.###.###-##",
+                                maxLength: 14,
+                                keyboardType: TextInputType.number,
+                                inputDecoration: new InputDecoration(
+                                  labelText: "CPF",
+                                  border: OutlineInputBorder(),
+                                  hintText: "CPF",
+                                  suffixIcon: Visibility(
+                                    visible: _isFieldEmptyCpf,
+                                    child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
+                                      _isFieldEmptyCpf = false;
+                                      _cpfController.clear();
+                                    });},),
+                                  )
+                                ),
+                                onChange: (text) { user.cpf = text; buttonActive(); setState(() { _isFieldEmptyCpf = true;});},
                               ),
-                              validator: (String val) {
-                                if(!RegExp(r"([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})").hasMatch(val))
-                                  return "Format 000.000.000-00";
-                                else return null;
-                              },
-                              controller: _cpfController,
-                              onTap: (){ setState(() { _isFieldEmptyCpf = true;});},
-                              keyboardType: TextInputType.phone,
-                              onSaved: (val) => user.cpf = val,
-                              onChanged: (text) { user.cpf = text; buttonActive(); },
-                              )
                             ),
                           ],
                         ),
@@ -278,29 +273,26 @@ class _FormUserState extends State<FormUser> {
                         child: Column(
                           children: <Widget>[
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                              child: TextFormField(decoration: InputDecoration(
-                                labelText: "CEP",
-                                border: OutlineInputBorder(),
-                                hintText: "CEP",
-                                suffixIcon: Visibility(
-                                  visible: _isFieldEmptyCep,
-                                  child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
-                                    _isFieldEmptyCep = false;
-                                    _cepController.clear();
-                                  });},),
-                                )
+                              child: MaskedTextField(
+                                maskedTextFieldController: _cepController,
+                                escapeCharacter: '#',
+                                mask: "#####-###",
+                                maxLength: 9,
+                                keyboardType: TextInputType.number,
+                                inputDecoration: new InputDecoration(
+                                  labelText: "CEP",
+                                  border: OutlineInputBorder(),
+                                  hintText: "CEP",
+                                  suffixIcon: Visibility(
+                                    visible: _isFieldEmptyCep,
+                                    child: IconButton(icon: Icon(Icons.cancel, color: Colors.black), onPressed: (){setState(() {
+                                      _isFieldEmptyCep = false;
+                                      _cepController.clear();
+                                    });},),
+                                  )
+                                ),
+                                onChange: (text) { user.cep = text; buttonActive(); setState(() { _isFieldEmptyCep = true;});},
                               ),
-                              validator: (String val) {
-                                if(!RegExp(r'^[0-9]{5}-[0-9]{3}$').hasMatch(val))
-                                  return "Format 00000-000";
-                                else
-                                  return null;
-                              },
-                              controller: _cepController,
-                              onTap: (){ setState(() { _isFieldEmptyCep = true;});},
-                              keyboardType: TextInputType.phone,
-                              onSaved: (val) => user.cep = val,
-                              onChanged: (text) { user.cep = text; buttonActive(); },)
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                               child: TextFormField(decoration: InputDecoration(
@@ -322,10 +314,9 @@ class _FormUserState extends State<FormUser> {
                                   return null;
                               },
                               controller: _streetController,
-                              onTap: (){ setState(() { _isFieldEmptyStreet = true;});},
                               keyboardType: TextInputType.text,
                               onSaved: (val) => user.street = val,
-                              onChanged: (text) { user.street = text; buttonActive(); },)
+                              onChanged: (text) { user.street = text; buttonActive(); setState(() { _isFieldEmptyStreet = true;});},)
                             ),
                             Row(
                               children: <Widget>[
@@ -351,10 +342,9 @@ class _FormUserState extends State<FormUser> {
                                         return null;
                                     },
                                     controller: _numberController,
-                                    onTap: (){ setState(() { _isFieldEmptyNumber = true;});},
                                     keyboardType: TextInputType.number,
                                     onSaved: (val) => user.numberHouse = val,
-                                    onChanged: (text) { user.numberHouse = text; buttonActive(); },)
+                                    onChanged: (text) { user.numberHouse = text; buttonActive(); setState(() { _isFieldEmptyNumber = true;});},)
                                   ),
                                 ),
                                 Flexible(
@@ -373,10 +363,9 @@ class _FormUserState extends State<FormUser> {
                                       )
                                     ),
                                     controller: _complementController,
-                                    onTap: (){ setState(() { _isFieldEmptyComplement = true;});},
                                     keyboardType: TextInputType.text,
                                     onSaved: (val) => user.complement = val,
-                                    onChanged: (text) { user.complement = text; buttonActive(); },)
+                                    onChanged: (text) { user.complement = text; buttonActive(); setState(() { _isFieldEmptyComplement = true;});},)
                                   ),
                                 )
                               ],
@@ -402,10 +391,9 @@ class _FormUserState extends State<FormUser> {
                                   return null;
                               },
                               controller: _districtController,
-                              onTap: (){ setState(() { _isFieldEmptyDistrict = true;});},
                               keyboardType: TextInputType.text,
                               onSaved: (val) => user.district = val,
-                              onChanged: (text) { user.district = text; buttonActive(); },)
+                              onChanged: (text) { user.district = text; buttonActive(); setState(() { _isFieldEmptyDistrict = true;});},)
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                               child: TextFormField(decoration: InputDecoration(
@@ -427,10 +415,9 @@ class _FormUserState extends State<FormUser> {
                                   return null;
                               },
                               controller: _cityController,
-                              onTap: (){ setState(() { _isFieldEmptyCity = true;});},
                               keyboardType: TextInputType.text,
                               onSaved: (val) => user.city = val,
-                              onChanged: (text) { user.city = text; buttonActive(); },)
+                              onChanged: (text) { user.city = text; buttonActive(); setState(() { _isFieldEmptyCity = true;});},)
                             ),
                             Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                               child: TextFormField(decoration: InputDecoration(
@@ -452,10 +439,9 @@ class _FormUserState extends State<FormUser> {
                                   return null;
                               },
                               controller: _stateController,
-                              onTap: (){ setState(() { _isFieldEmptyState = true;});},
                               keyboardType: TextInputType.text,
                               onSaved: (val) => user.state = val,
-                              onChanged: (text) { user.state = text; buttonActive(); },)
+                              onChanged: (text) { user.state = text; buttonActive(); setState(() { _isFieldEmptyState = true;});},)
                             ),
                           ],
                         ),
