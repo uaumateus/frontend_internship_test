@@ -50,7 +50,7 @@ class _FormUserState extends State<FormUser> {
 
     setState((){
       //Primary Colors Material Design
-      user.color = (["16007990", "15277667", "10233776", "6765239", "4149685", "2201331", "48340", "38536", "5025616", "13491257", "16761095", "16750592", "607D8B"]..shuffle()).first;
+      user.color = (["16007990", "15277667", "10233776", "6765239", "4149685", "2201331", "48340", "38536", "5025616", "13491257", "16761095", "16750592"]..shuffle()).first;
     });
 
     if (!_formKey.currentState.validate()) {

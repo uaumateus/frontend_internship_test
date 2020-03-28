@@ -39,10 +39,13 @@ class _ListUsersState extends State<ListUsers> {
 
                 initialized = true;
               }
-              return users.length != 0 ? ListView(
-                children: <Widget>[ 
-                  for (var item in users)
-                    ListTile(
+              return users.length != 0 ? 
+              ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  final item = users[index];
+
+                  return ListTile(
                       leading: CircleAvatar(child: Text(item.name[0].toUpperCase() + item.name.split(" ")[1][0].toUpperCase()), radius: 25.0, foregroundColor: Colors.white, backgroundColor: Color(int.parse(item.color) << 0).withOpacity(1.0),),
                       title: Text(item.name),
                       subtitle: Text(item.email),
@@ -52,9 +55,25 @@ class _ListUsersState extends State<ListUsers> {
                           MaterialPageRoute(builder: (context) => UserData(item)),
                         )
                       },
-                    ),
-                ]
+                    );
+                },
               )
+              // ListView(
+              //   children: <Widget>[ 
+              //     for (var item in users)
+              //       ListTile(
+              //         leading: CircleAvatar(child: Text(item.name[0].toUpperCase() + item.name.split(" ")[1][0].toUpperCase()), radius: 25.0, foregroundColor: Colors.white, backgroundColor: Color(int.parse(item.color) << 0).withOpacity(1.0),),
+              //         title: Text(item.name),
+              //         subtitle: Text(item.email),
+              //         onTap: () => {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(builder: (context) => UserData(item)),
+              //           )
+              //         },
+              //       ),
+              //   ]
+              // )
               :
               Center(child: Text("No registered users"),);
             },
