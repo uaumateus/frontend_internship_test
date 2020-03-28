@@ -21,7 +21,8 @@ class FloatingButton extends StatelessWidget {
            end: Alignment.bottomCenter,
            colors: <Color>[
              Colors.blue,
-             Colors.purple
+             Colors.indigo,
+             Colors.deepPurple
            ],
          ),
          borderRadius: BorderRadius.all(Radius.circular(80.0))
