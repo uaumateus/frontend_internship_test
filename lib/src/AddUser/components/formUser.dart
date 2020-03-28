@@ -182,6 +182,7 @@ class _FormUserState extends State<FormUser> {
                                 maxLength: 16,
                                 keyboardType: TextInputType.phone,
                                 inputDecoration: new InputDecoration(
+                                  counterText: "",
                                   labelText: "Phone",
                                   border: OutlineInputBorder(),
                                   hintText: "Phone",
@@ -243,6 +244,7 @@ class _FormUserState extends State<FormUser> {
                                 keyboardType: TextInputType.number,
                                 inputDecoration: new InputDecoration(
                                   labelText: "CPF",
+                                  counterText: "",
                                   border: OutlineInputBorder(),
                                   hintText: "CPF",
                                   suffixIcon: Visibility(
@@ -281,6 +283,7 @@ class _FormUserState extends State<FormUser> {
                                 keyboardType: TextInputType.number,
                                 inputDecoration: new InputDecoration(
                                   labelText: "CEP",
+                                  counterText: "",
                                   border: OutlineInputBorder(),
                                   hintText: "CEP",
                                   suffixIcon: Visibility(
