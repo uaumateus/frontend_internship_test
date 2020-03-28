@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontent_internship_test/models/user.dart';
+import 'package:frontent_internship_test/src/Home/home_page.dart';
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
+import 'dart:math';
 
 class FormUser extends StatefulWidget {
   FormUser({Key key, this.title}) : super(key: key);
@@ -13,7 +15,7 @@ class FormUser extends StatefulWidget {
 
 class _FormUserState extends State<FormUser> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final LocalStorage storage = new LocalStorage('todo_app');
+  final LocalStorage storage = new LocalStorage('app');
   User user = new User();
   bool active = false;
 
@@ -25,37 +27,39 @@ class _FormUserState extends State<FormUser> {
     if (!form.validate()) {
       print('Form is not valid!  Please review and correct.');
     } else {
-      // form.save(); //This invokes each onSaved event
       if(items == null){
         List<User> save = [user];
-        String jsonTags = jsonEncode(save);
-        print(jsonTags);
-        // save.add(jsonDecode(user));
-        // storage.setItem('users', save);
-        // print(storage.getItem('users').toString());
+        String jsonUsers = jsonEncode(save);
+        storage.setItem('users', jsonUsers);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      }else{
+        List<dynamic> save = jsonDecode(items);
+        save.add(user);
+        String jsonUsers = jsonEncode(save);
+        storage.setItem('users', jsonUsers);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
       }
-      // print('Form save called, user is now up to date...');
-      // print('Name: ${user.name}');
-      // print('Phone: ${user.phone}');
-      // print('Email: ${user.email}');
-      // print('========================================');
-      // print('Submitting to back end...');
-      // print('TODO - we will write the submission part next...');
-      }
+    }
   }
 
   void buttonActive(){
-    // if(user.name.isNotEmpty && 
-    // user.email.isNotEmpty && 
-    // user.phone.isNotEmpty && 
-    // user.date.isNotEmpty && 
-    // user.cpf.isNotEmpty && 
-    // user.cep.toString().isNotEmpty && 
-    // user.street.isNotEmpty && 
-    // user.numberHouse.toString().isNotEmpty &&
-    // user.district.isNotEmpty &&
-    // user.city.isNotEmpty &&
-    // user.state.isNotEmpty)
+    if(user.name.isNotEmpty && 
+    user.email.isNotEmpty && 
+    user.phone.isNotEmpty && 
+    user.date.isNotEmpty && 
+    user.cpf.isNotEmpty && 
+    user.cep.toString().isNotEmpty && 
+    user.street.isNotEmpty && 
+    user.numberHouse.toString().isNotEmpty &&
+    user.district.isNotEmpty &&
+    user.city.isNotEmpty &&
+    user.state.isNotEmpty)
       setState(() {
         active = true;
       });
@@ -155,8 +159,8 @@ class _FormUserState extends State<FormUser> {
                               border: OutlineInputBorder(),
                               hintText: "CEP",
                             ),
-                            onSaved: (val) => user.cep = int.parse(val),
-                            onChanged: (text) { user.cep = int.parse(text); buttonActive(); },)
+                            onSaved: (val) => user.cep = val,
+                            onChanged: (text) { user.cep = text; buttonActive(); },)
                           ),
                           Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                             child: TextFormField(decoration: InputDecoration(
@@ -173,8 +177,8 @@ class _FormUserState extends State<FormUser> {
                               border: OutlineInputBorder(),
                               hintText: "Number",
                             ),
-                            onSaved: (val) => user.numberHouse = int.parse(val),
-                            onChanged: (text) { user.numberHouse = int.parse(text); buttonActive(); },)
+                            onSaved: (val) => user.numberHouse = val,
+                            onChanged: (text) { user.numberHouse = text; buttonActive(); },)
                           ),
                           Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                             child: TextFormField(decoration: InputDecoration(
