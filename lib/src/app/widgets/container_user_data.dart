@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontent_internship_test/models/user.dart';
+import 'package:frontent_internship_test/src/domain/entities/user.dart';
 
-class ContainerTopUser extends StatelessWidget {
+class ContainerUserData extends StatelessWidget {
   final User user;
-  ContainerTopUser(this.user);
+  ContainerUserData(this.user);
 
   @override
   Widget build(BuildContext context) {

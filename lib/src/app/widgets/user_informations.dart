@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontent_internship_test/models/user.dart';
+import 'package:frontent_internship_test/src/domain/entities/user.dart';
 
-class Informations extends StatelessWidget {
+class UserInformations extends StatelessWidget {
   final User user;
-  Informations(this.user);
+  UserInformations(this.user);
 
   @override
   Widget build(BuildContext context) {
